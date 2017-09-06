@@ -23,7 +23,7 @@
 var originalData = [];
 var filterCols = ["source", "target", "value"];
 var toFilter = [];
-div_name = "body";
+div_id = "body";
 
 d3.csv("sankey_data.csv", function(error, data) {
 
@@ -33,14 +33,17 @@ d3.csv("sankey_data.csv", function(error, data) {
   	})
   	
 	test_1 = toFilter[0]
-	unique_vars = d3.keys(d3.nest().key(function (d) { return d[test_1]; }).map(data))
 
-	checkboxes = d3.select(div_name).append("div").classed("control", true).classed(test_1 + "_controls", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
+	
 
-	checkboxes.append("input").property("type","checkbox").property("checked", true);
+	for (i = 0; i<toFilter.length; i++){
+		unique_vars = d3.keys(d3.nest().key(function (d) { return d[toFilter[i]]; }).map(data))
+		checkboxes = d3.select(div_id).append("div").classed("control", true).classed(unique_vars[i] + "_controls", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
 
-	checkboxes.append("text").text(function(d){return d;});
+		checkboxes.append("input").property("type","checkbox").property("checked", true);
 
+		checkboxes.append("text").text(function(d){return d;});
+	}
 	d3.selectAll("label").on("change", this_val)
 
 	function this_val(){
