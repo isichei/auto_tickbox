@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<title> TESTER </title>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<style type="text/css">
+.control {padding: 6px; font-size:14px;}
+.control label {
+  display: block;
+  clear: both;
+}
+.control button { border: outset 2px; }
+.control button.active { border: inset 2px; }
+
+
+</style>
+<body>
+<div><div>
+</body>
+<script>
+var originalData = [];
+var filterCols = ["source", "target", "value"];
+var toFilter = [];
+div_name = "body";
+
+d3.csv("sankey_data.csv", function(error, data) {
+
+	colnames = Object.keys(data[0])
+	toFilter = colnames.filter(function(d){
+  		return filterCols.indexOf(d) == -1;
+  	})
+  	
+	test_1 = toFilter[0]
+	unique_vars = d3.keys(d3.nest().key(function (d) { return d[test_1]; }).map(data))
+
+	checkboxes = d3.select(div_name).append("div").classed("control", true).classed(test_1 + "_controls", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
+
+	checkboxes.append("input").property("type","checkbox").property("checked", true);
+
+	checkboxes.append("text").text(function(d){return d;});
+
+	d3.selectAll("label").on("change", this_val)
+
+	function this_val(){
+		console.log(this.value);
+	}
+  });
+</script>
+</html>
