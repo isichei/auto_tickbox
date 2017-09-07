@@ -4,6 +4,7 @@
 <head>
 	<title> TESTER </title>
 	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="AutoTickBoxer.js"></script>
 </head>
 <style type="text/css">
 .control {padding: 6px; font-size:14px;}
@@ -21,35 +22,12 @@
 </body>
 <script>
 var originalData = [];
-var exclude_columns = ["source", "target", "value"];
-var div_id = "body";
-var at = new auto_tickboxer(exclude_columns, div_id, "sankey_data.csv")
+var excludeColumns = ["source", "target", "value"];
+var divId = "body";
+var atb = new AutoTickBoxer(excludeColumns, divId, "sankey_data.csv");
 
-at.initialise();
+atb.initialise();
 
-function auto_tickboxer(exclude_columns, div_id, data_file_path){
-	this.exclude_columns = exclude_columns;
-	this.div_id = div_id;
-	this.data_file_path = data_file_path;
 
-	this.initialise = function(exclude_columns, div_id, data_file_path){
-		d3.csv(this.data_file_path, function(error, data) {
-
-		var colnames = Object.keys(data[0])
-		var toFilter = colnames.filter(function(d){
-	  		return this.exclude_columns.indexOf(d) == -1;
-	  	})
-
-		for (i = 0; i<toFilter.length; i++){
-			unique_vars = d3.keys(d3.nest().key(function (d) { return d[toFilter[i]]; }).map(data))
-			checkboxes = d3.select(this.div_id).append("div").classed("control", true).classed(unique_vars[i] + "_controls", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
-
-			checkboxes.append("input").property("type","checkbox").property("checked", true);
-
-			checkboxes.append("text").text(function(d){return d;});
-		}
-	  })
-	}
-}
 </script>
 </html>
