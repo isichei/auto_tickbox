@@ -4,6 +4,7 @@ function AutoTickBoxer(excludeColumns, divId, data){
 	this.divId = divId;
 	this.data = data;
 	this.toFilter = Object.keys(this.data[0]).filter(function(d){return this.excludeColumns.indexOf(d) == -1;});
+	this.allCheckboxClass = ".autotickboxCheckbox";
 	
 	this.generateTickboxes = function(){
 		var col;
@@ -11,13 +12,12 @@ function AutoTickBoxer(excludeColumns, divId, data){
 			col = this.toFilter[i];
 			unique_vars = d3.keys(d3.nest().key(function (d) { return d[col];}).map(this.data));
 			checkboxes = d3.select(this.divId).append("div").attr("id",col+"_tickbox_div").classed("control", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
-			checkboxes.append("input").property("type","checkbox").property("checked", true);
+			checkboxes.append("input").classed("autotickboxCheckbox",true).property("type","checkbox").property("checked", true);
 			checkboxes.append("text").text(function(d){return d;});
 		}
 	}
 
 	this.filterData = function(){
-		
 		// Initialise
 		var filteredData = this.data;
 		var tmpArray; 
