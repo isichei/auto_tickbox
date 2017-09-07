@@ -24,9 +24,33 @@
 var originalData = [];
 var excludeColumns = ["source", "target", "value"];
 var divId = "body";
-var atb = new AutoTickBoxer(excludeColumns, divId, "sankey_data.csv");
+var atb;
+var dataPath = "sankey_data.csv"
 
-atb.initialise();
+var dataRead = new Promise(function(resolve, reject){
+  d3.csv(dataPath, function(error, data) {
+    
+    if(error) reject(error);
+
+    data.forEach(function (d){
+      originalData.push(
+        {
+        "year": d.year,
+        "offence_type": d.offence_type,
+        "offence_group": d.offence_group,
+        "source": d.source,
+        "target": d.target,
+        "value": +d.value
+        })
+    });
+    resolve();
+  });
+});
+
+dataRead.then(function(e){
+	atb = new AutoTickBoxer(excludeColumns, divId, originalData);
+	atb.generateTickboxes();
+});
 
 
 </script>
