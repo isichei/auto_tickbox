@@ -6,14 +6,34 @@ function AutoTickBoxer(excludeColumns, divId, data){
 	this.toFilter = Object.keys(this.data[0]).filter(function(d){return this.excludeColumns.indexOf(d) == -1;});
 	this.allCheckboxClass = ".autotickboxCheckbox";
 	
-	this.generateTickboxes = function(){
+	this.generateTickboxes = function(labelNames){
+
 		var col;
-		for (i = 0; i<this.toFilter.length; i++){
+    var getLabel = function (valueName, renameDictionary) {
+        return ((typeof(renameDictionary[valueName]) === 'undefined') ? valueName : renameDictionary[valueName]);
+    }
+
+		for (i = 0; i < this.toFilter.length; i++){
 			col = this.toFilter[i];
+			columnRenameDictionary = ((typeof(labelNames[col]) === 'undefined') ? {} : labelNames[col]);
+			console.log(columnRenameDictionary);
 			unique_vars = d3.keys(d3.nest().key(function (d) { return d[col];}).map(this.data));
-			checkboxes = d3.select(this.divId).append("div").attr("id",col+"_tickbox_div").classed("control", true).selectAll("label").data(unique_vars).enter().append("label").property("value", function(d){return d;});
-			checkboxes.append("input").classed("autotickboxCheckbox",true).property("type","checkbox").property("checked", true);
-			checkboxes.append("text").text(function(d){return d;});
+
+			checkboxes = d3.select(this.divId)
+										.append("div")
+										.attr("id", col+"_tickbox_div")
+										.classed("control", true)
+										.selectAll("label")
+										.data(unique_vars).enter()
+										.append("label")
+										.property("value", function(d){return d;});
+
+			checkboxes.append("input")
+								.classed("autotickboxCheckbox",true)
+								.property("type","checkbox")
+								.property("checked", true);
+
+			checkboxes.append("text").text(function(d){return getLabel(d, columnRenameDictionary);});
 		}
 	}
 
