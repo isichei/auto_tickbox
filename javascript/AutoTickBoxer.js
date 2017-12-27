@@ -6,16 +6,23 @@ function AutoTickBoxer(excludeColumns, divId, data){
 	this.toFilter = Object.keys(this.data[0]).filter(function(d){return this.excludeColumns.indexOf(d) == -1;});
 	this.allCheckboxClass = ".autotickboxCheckbox";
 	
-	this.generateTickboxes = function(labelNames){
+	this.generateTickboxes = function(options){
 
 		var col;
-    var getLabel = function (valueName, renameDictionary) {
-        return ((typeof(renameDictionary[valueName]) === 'undefined') ? valueName : renameDictionary[valueName]);
-    }
+
+		var isUndefined = function(obj, key, returnValueIfUndefined){
+			returnValueIfUndefined = (returnValueIfUndefined === 'undefined') ? true : returnValueIfUndefined
+			return (typeof(obj[key]) === 'undefined' ? returnValueIfUndefined : obj[key])
+		}
+
+    // var getLabel = function (valueName, renameDictionary) {
+    //     return (isUndefined(renameDictionary[valueName]) ? valueName : renameDictionary[valueName]);
+    // }
 
 		for (i = 0; i < this.toFilter.length; i++){
 			col = this.toFilter[i];
-			columnRenameDictionary = ((typeof(labelNames[col]) === 'undefined') ? {} : labelNames[col]);
+			colOptions = isUndefined(options, col, {}); 
+      columnRenameDictionary = isUndefined(colOptions, 'valueNames', {});
 			console.log(columnRenameDictionary);
 			unique_vars = d3.keys(d3.nest().key(function (d) { return d[col];}).map(this.data));
 
@@ -33,7 +40,7 @@ function AutoTickBoxer(excludeColumns, divId, data){
 								.property("type","checkbox")
 								.property("checked", true);
 
-			checkboxes.append("text").text(function(d){return getLabel(d, columnRenameDictionary);});
+			checkboxes.append("text").text(function(d){return isUndefined(columnRenameDictionary, d, d);});
 		}
 	}
 
