@@ -183,9 +183,9 @@ dataRead.then(function(e){
       "type" : "dropdown"
     }
   }
-  atb = new AutoTickBoxer(excludeColumns, divId, originalData, atbOptions);
+  atb = new AutoTickBoxer(excludeColumns, divId, originalData, atbOptions, checkboxEvent);
   atb.generateTickboxes();
-  d3.selectAll(atb.allCheckboxClass).on("change", checkboxEvent);
+  // d3.selectAll(atb.allCheckboxClass).on("change", checkboxEvent);
 });
 
 function initialise_data(){
@@ -446,6 +446,7 @@ function updateSankey(graph){
 }
 
 function checkboxEvent(){
+  console.log('called')
   updateData();
 }
 

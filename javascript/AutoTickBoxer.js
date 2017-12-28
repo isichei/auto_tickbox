@@ -1,9 +1,11 @@
 // Autotickbox constructor
-function AutoTickBoxer(excludeColumns, divId, data, options){
+function AutoTickBoxer(excludeColumns, divId, data, options, eventListener){
 	this.excludeColumns = excludeColumns;
 	this.divId = divId;
 	this.data = data;
 	this.options = options;
+	this.eventListener = eventListener;
+
 	this.toFilter = Object.keys(this.data[0]).filter(function(d){return this.excludeColumns.indexOf(d) == -1;});
 	this.allCheckboxClass = ".autotickboxCheckbox";
 
@@ -19,6 +21,7 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 
 		var col;
 		var isUndefined = this.isUndefined;
+		var eventListener = this.eventListener;
 		// if returnValue is true function returns obj[key] (if key in obj is defined, otherwise will return null)
 		// if returnValue is false then returns true or false (for is key in object)
 		// default for return value is false
@@ -37,11 +40,12 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 
 			// If there is a descriptor for the column
 			if (!isUndefined(colOptions, "name", null)) {
-			   checkboxDiv.append("label").append("text")
-			   						.classed("description_autotickboxer", true)
-			   						// .style("font-style", "italic")
-										.style("font-weight", "bold")
-										.text(colOptions["name"])
+			   checkboxDiv.append("label")
+			   .classed("description_autotickboxer", true)
+			   .append("text")
+			   // .style("font-style", "italic")
+				 .style("font-weight", "bold")
+				 .text(colOptions["name"])
 			}
 			// Then add the checkboxes or dropdown box
 			if (isUndefined(colOptions, "type", 'checkbox') == 'checkbox') {
@@ -60,6 +64,8 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 													
 												  // select all tick boxes and turn them off
 												  d3.selectAll("." + column_name + "_checkbox_autotickboxer").property("checked", this.checked);
+
+												  eventListener();
 												});
 											
 					selectAllLabel.append("text")
@@ -67,7 +73,7 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 												.style("font-weight", "bold")
 												.text("Select all");
 				}
-				checkboxes = checkboxDiv.selectAll("label:not(.select_all_autotickboxer)")
+				checkboxes = checkboxDiv.selectAll("label:not(.select_all_autotickboxer):not(.description_autotickboxer)")
 											.data(unique_vars).enter()
 											.append("label")
 											.property("value", function(d){return d;});
@@ -76,13 +82,15 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 									.classed("autotickboxCheckbox", true)
 									.classed(col+"_checkbox_autotickboxer", true)
 									.property("type","checkbox")
-									.property("checked", true);
+									.property("checked", true)
+									.on("click", eventListener);
 
 				checkboxes.append("text").text(function(d){return isUndefined(columnRenameDictionary, d, d);});
 			} else {
 				// Create dropbox
 				var select = checkboxDiv.append('select')
   					.attr('class','select')
+  					.on('change', eventListener)
 
 				var options = select
 				  .selectAll('option')
