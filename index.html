@@ -170,8 +170,21 @@ var dataRead = new Promise(function(resolve, reject){
 });
 
 dataRead.then(function(e){
-  atb = new AutoTickBoxer(excludeColumns, divId, originalData);
-  atb.generateTickboxes({"offence_type" : {"valueNames" : {"tew" : "Triable Either Way"}, "selectAll" : true, "name": "Type of Offence"}});
+  atbOptions = {
+    "offence_type" : {
+      "valueNames" : {
+        "tew" : "Triable Either Way"
+      },
+      "selectAll" : true,
+      "name": "Type of Offence"
+    },
+    "year" : {
+      "name" : "Select year",
+      "type" : "dropdown"
+    }
+  }
+  atb = new AutoTickBoxer(excludeColumns, divId, originalData, atbOptions);
+  atb.generateTickboxes();
   d3.selectAll(atb.allCheckboxClass).on("change", checkboxEvent);
 });
 
