@@ -157,7 +157,7 @@ var dataRead = new Promise(function(resolve, reject){
     data.forEach(function (d){
       originalData.push(
         {
-        "year": d.year,
+        "year": +d.year,
         "offence_type": d.offence_type,
         "offence_group": d.offence_group,
         "source": d.source,

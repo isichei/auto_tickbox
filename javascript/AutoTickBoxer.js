@@ -124,17 +124,18 @@ function AutoTickBoxer(excludeColumns, divId, data, options){
 				.each(function(d){if(this.checked){tmpArray.push(d)}})
 
 			} else {
-				dropdownSelection = d3.select("#"+ col +"_tickbox_div").select('select').property('value')
-				d3.select("#"+ col +"_tickbox_div")
-				.select("select")
-				.selectAll("option")
-				.each(function(d){if(this.innerHTML == dropdownSelection){tmpArray.push(d)}})
+				tmpArray.push(d3.select("#"+ col +"_tickbox_div").select('select').property('value'))
+				// dropdownSelection = d3.select("#"+ col +"_tickbox_div").select('select').property('value')
+				// console.log(typeof(dropdownSelection))
+				// d3.select("#"+ col +"_tickbox_div")
+				// .select("select")
+				// .selectAll("option")
+				// .each(function(d){if(this.innerHTML == dropdownSelection){tmpArray.push(d)}})
 			}
-			// Add to the list any options that are selected
 
 			// filter data
 			filteredData = filteredData.filter(function(d){
-	    	return tmpArray.indexOf(d[col]) >= 0;
+	    	return tmpArray.indexOf(""+d[col]) >= 0;
 	    });
 		}
 
