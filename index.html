@@ -7,7 +7,7 @@
   <script src="https://d3js.org/d3.v3.min.js"></script>
   
   <script src="javascript/AutoTickBoxer.js"></script>
-  <script src="javascript/sankey.js"></script>
+  <script src="https://moj-analytical-services.github.io/criminal_justice_statistics_sankey/javascript/sankey.js"></script>
   
   </head>
 <title> Sankey Test </title>
@@ -144,7 +144,8 @@ h1 {
 <script>
 // Define global variables
 var originalData = [];
-var dataFilePath = "data/sankey_data.csv";
+// var dataFilePath = "data/sankey_data.csv";
+var dataFilePath = "https://moj-analytical-services.github.io/criminal_justice_statistics_sankey/data/sankey_data.csv"
 var excludeColumns = ["source","target","value"];
 var divId = "#filterOptions";
 
@@ -170,10 +171,14 @@ var dataRead = new Promise(function(resolve, reject){
 });
 
 dataRead.then(function(e){
+  // Define tickbox options
   atbOptions = {
     "offence_type" : {
       "valueNames" : {
-        "tew" : "Triable Either Way"
+        "tew" : "Triable Either Way",
+        "ind" : "Indictable Only",
+        "snm" : "Summary Non-Motoring",
+        "smo" : "Summary Motoring"
       },
       "selectAll" : true,
       "name": "Type of Offence"
