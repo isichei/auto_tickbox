@@ -1,58 +1,23 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<meta charset='utf-8'>
 <html>
-<head>
-	<title> TESTER </title>
-	<script src="https://d3js.org/d3.v3.min.js"></script>
-	<script src="javascript/AutoTickBoxer.js"></script>
-	<script src="javascript/sankey.js"></script>
-</head>
-<style type="text/css">
-.control {padding: 6px; font-size:14px;}
-.control label {
-  display: block;
-  clear: both;
-}
-.control button { border: outset 2px; }
-.control button.active { border: inset 2px; }
+  <head>
+    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <script src="javascript/AutoTickBoxer.js"></script>
+    <link rel='stylesheet' href='style.css'>
+  </head>
+      <style type="text/css">
+      #tickboxOptions {
+        float: left;
+      }
 
-
-</style>
-<body>
-<div><div>
-</body>
-<script>
-var originalData = [];
-var excludeColumns = ["source", "target", "value"];
-var divId = "body";
-var atb;
-var dataPath = "sankey_data.csv"
-
-var dataRead = new Promise(function(resolve, reject){
-  d3.csv(dataPath, function(error, data) {
-    
-    if(error) reject(error);
-
-    data.forEach(function (d){
-      originalData.push(
-        {
-        "year": d.year,
-        "offence_type": d.offence_type,
-        "offence_group": d.offence_group,
-        "source": d.source,
-        "target": d.target,
-        "value": +d.value
-        })
-    });
-    resolve();
-  });
-});
-
-dataRead.then(function(e){
-	atb = new AutoTickBoxer(excludeColumns, divId, originalData);
-	atb.generateTickboxes();
-});
-
-
-</script>
+      #tickboxOptions label {
+        display: block;
+      }
+    </style>
+  <body>
+    <div id = 'tickboxOptions'></div>
+    <div id = 'divTable'></div>
+  </body>
+  <script src="javascript/simpleExample.js"></script>
 </html>

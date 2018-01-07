@@ -30,7 +30,7 @@ function AutoTickBoxer(tickboxColumns, divId, data, options = null, eventListene
 			col = this.toFilter[i];
 			colOptions = isUndefined(this.options, col, {}); 
       columnRenameDictionary = isUndefined(colOptions, 'valueNames', {});
-			unique_vars = d3.keys(d3.nest().key(function (d) { return d[col];}).map(this.data));
+			unique_vars = d3.set(this.data.map(function(d){return d[col];})).values();
 
 			checkboxDiv = d3.select(this.divId)
 										.append("div")
