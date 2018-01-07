@@ -1,12 +1,11 @@
 // Autotickbox constructor
-function AutoTickBoxer(excludeColumns, divId, data, options, eventListener){
-	this.excludeColumns = excludeColumns;
+function AutoTickBoxer(tickboxColumns, divId, data, options = null, eventListener = null){
+	this.toFilter = tickboxColumns;
 	this.divId = divId;
 	this.data = data;
-	this.options = options;
-	this.eventListener = eventListener;
-
-	this.toFilter = Object.keys(this.data[0]).filter(function(d){return this.excludeColumns.indexOf(d) == -1;});
+	options == null ? this.options = {} : this.options = options;
+	eventListener == null ? this.eventListener = function(){} : this.eventListener = eventListener;
+	// this.eventListener = eventListener;
 	this.allCheckboxClass = ".autotickboxCheckbox";
 
 	this.isUndefined = function(obj, key, returnValueIfUndefined){

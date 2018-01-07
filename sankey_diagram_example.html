@@ -146,7 +146,7 @@ h1 {
 var originalData = [];
 // var dataFilePath = "data/sankey_data.csv";
 var dataFilePath = "https://moj-analytical-services.github.io/criminal_justice_statistics_sankey/data/sankey_data.csv"
-var excludeColumns = ["source","target","value"];
+var tickboxColumns = ["year","offence_type","offence_group"];
 var divId = "#filterOptions";
 
 // Wrap data read in a promise to ensure data is read in before being referenced later on
@@ -188,7 +188,7 @@ dataRead.then(function(e){
       "type" : "dropdown"
     }
   }
-  atb = new AutoTickBoxer(excludeColumns, divId, originalData, atbOptions, checkboxEvent);
+  atb = new AutoTickBoxer(tickboxColumns, divId, originalData, atbOptions, checkboxEvent);
   atb.generateTickboxes();
   // d3.selectAll(atb.allCheckboxClass).on("change", checkboxEvent);
 });
